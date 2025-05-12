@@ -1,18 +1,34 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-public class HistorialRegistro
+namespace MovimientoEstudiantil.Models
 {
-    public int IdHistorial { get; set; }
+    public class HistorialRegistro
+    {
+        [Key]
+        public int idHistorial { get; set; }
 
-    public int IdUsuario { get; set; }
+        [Required]
+        [ForeignKey("Usuario")]
+        public int idUsuario { get; set; }
 
-    public string Accion { get; set; }
+        [Required(ErrorMessage = "La acción es obligatoria")]
+        public string accion { get; set; }
 
-    public string Descripcion { get; set; } 
+        [Required(ErrorMessage = "La descripción es obligatoria")]
+        public string descripcion { get; set; }
 
-    public DateTime FechaRegistro { get; set; }
+        [Required]
+        public DateTime fechaRegistro { get; set; } = DateTime.Now;
 
-    public TimeSpan Hora { get; set; }
+        [Required]
+        public TimeSpan hora { get; set; } = DateTime.Now.TimeOfDay;
 
-    public string Rol { get; set; } 
+        [Required(ErrorMessage = "El rol es obligatorio")]
+        public string rol { get; set; }
+
+        // Propiedad de navegación
+        public Usuario Usuario { get; set; }
+    }
 }

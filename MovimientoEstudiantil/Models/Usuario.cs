@@ -1,16 +1,28 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
-public class Usuario
+namespace MovimientoEstudiantil.Models
 {
-    public int IdUsuario { get; set; }
+    public class Usuario
+    {
+        [Key]
+        public int idUsuario { get; set; }
 
-    public string Correo { get; set; }
+        [Required(ErrorMessage = "El correo es obligatorio")]
+        [EmailAddress(ErrorMessage = "El correo no tiene un formato válido")]
+        public string correo { get; set; }
 
-    public string Sede { get; set; }
+        [Required(ErrorMessage = "La sede es obligatoria")]
+        public string sede { get; set; }
 
-    public string Contrasena { get; set; }
+        [Required(ErrorMessage = "La contraseña es obligatoria")]
+        [DataType(DataType.Password)]
+        public string contrasena { get; set; }
 
-    public string Rol { get; set; } 
+        [Required(ErrorMessage = "El rol es obligatorio")]
+        public string rol { get; set; }
 
-    public DateTime FechaRegistro { get; set; }
+        [Required]
+        public DateTime fechaRegistro { get; set; } = DateTime.Now;  // Valor por defecto
+    }
 }
