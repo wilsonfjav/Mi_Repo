@@ -13,8 +13,8 @@ namespace MovimientoEstudiantil.Models
         [StringLength(100)]
         public string nombre { get; set; }
 
-        // Clave foránea
-        [ForeignKey("Provincia")]
+        [Required]
+        [Column("provincia_id")]
         public int idProvincia { get; set; }
 
         public virtual Provincia Provincia { get; set; }

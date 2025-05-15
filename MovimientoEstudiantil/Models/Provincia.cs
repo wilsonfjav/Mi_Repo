@@ -8,6 +8,7 @@ namespace MovimientoEstudiantil.Models
     public class Provincia
     {
         [Key]
+        [Column("id_provincia")]
         public int idProvincia { get; set; }
 
         [Required]
