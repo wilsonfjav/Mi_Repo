@@ -1,7 +1,5 @@
-﻿using MovimientoEstudiantil.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 
 namespace MovimientoEstudiantil.Models
 {
@@ -9,18 +7,16 @@ namespace MovimientoEstudiantil.Models
     public class Sede
     {
         [Key]
-        [Column("id_sede")]
-        public int id { get; set; }
+        public int idSede { get; set; }
 
         [Required]
-        [Column("nombre")]
         [StringLength(100)]
         public string nombre { get; set; }
 
-        [Required]
-        [Column("provincia_id")]
-        [ForeignKey("provinciaId")]
-        public int provinciaId { get; set; }
+        // Clave foránea
+        [ForeignKey("Provincia")]
+        public int idProvincia { get; set; }
 
+        public virtual Provincia Provincia { get; set; }
     }
 }

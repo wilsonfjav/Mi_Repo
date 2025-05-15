@@ -1,31 +1,46 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovimientoEstudiantil.Models
 {
+    [Table("Estudiante")]
     public class Estudiante
     {
         [Key]
+        [Column("id_estudiante")]
         public int idEstudiante { get; set; }
 
-        [Required(ErrorMessage = "El nombre del estudiante es obligatorio")]
-        public string nombre { get; set; }  // Se agregó campo de nombre, que estaba en el mensaje pero no en el código.
-        [ForeignKey("Provincia")]
-        [Required(ErrorMessage = "La provincia es obligatoria")]
-        public int provincia { get; set; }
-        [ForeignKey("Provincia")]
-        [Required(ErrorMessage = "La sede es obligatoria")]
-        public int sede { get; set; }
+        [Required]
+        [Column("nombre")]
+        [StringLength(100)]
+        public string nombre { get; set; }
 
-        [Required(ErrorMessage = "El correo es obligatorio")]
-        [EmailAddress(ErrorMessage = "El correo no tiene un formato válido")]
+        [Required]
+        [Column("correo")]
+        [EmailAddress]
+        [StringLength(100)]
         public string correo { get; set; }
 
-        [Required(ErrorMessage = "La satisfacción es obligatoria")]
+        [Required]
+        [Column("provincia_id")]
+        public int provincia { get; set; }
+
+        [Required]
+        [Column("sede_id")]
+        public int sede { get; set; }
+
+        [Required]
+        [Column("satisfaccion_carrera")]
+        [StringLength(2)]
         public string satisfaccionCarrera { get; set; }
 
-        [Required(ErrorMessage = "El año de ingreso es obligatorio")]
+        [Required]
+        [Column("anioIngreso")]
         public int anioIngreso { get; set; }
+
+        public virtual Provincia Provincia { get; set; }
+
+        public virtual Sede Sede { get; set; }
+
     }
 }

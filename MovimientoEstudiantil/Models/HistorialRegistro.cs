@@ -7,28 +7,33 @@ namespace MovimientoEstudiantil.Models
     public class HistorialRegistro
     {
         [Key]
+        [Column("id_historial")]
         public int idHistorial { get; set; }
 
         [Required]
-        [ForeignKey("Usuario")]
+        [Column("usuario_id")]
         public int idUsuario { get; set; }
 
-        [Required(ErrorMessage = "La acción es obligatoria")]
+        [Required]
+        [StringLength(25)]
         public string accion { get; set; }
 
-        [Required(ErrorMessage = "La descripción es obligatoria")]
+        [StringLength(200)]
         public string descripcion { get; set; }
 
         [Required]
+        [Column("fecha_registro", TypeName = "date")]
         public DateTime fechaRegistro { get; set; } = DateTime.Now;
 
-        [Required]
+        // En tu tabla no hay columna para hora, si quieres conservarla deberías añadirla en SQL
+        [NotMapped]
         public TimeSpan hora { get; set; } = DateTime.Now.TimeOfDay;
 
-        [Required(ErrorMessage = "El rol es obligatorio")]
-        public string rol { get; set; }
+        [NotMapped]
+        public string rol { get; set; } // No existe columna en la tabla SQL para esto, usar NotMapped o agregar columna
 
         // Propiedad de navegación
-        public Usuario Usuario { get; set; }
+        [ForeignKey("idUsuario")]
+        public virtual Usuario Usuario { get; set; }
     }
 }

@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovimientoEstudiantil.Models
 {
@@ -7,14 +8,13 @@ namespace MovimientoEstudiantil.Models
     public class Provincia
     {
         [Key]
-        [Column("id_provincia")]
         public int idProvincia { get; set; }
 
         [Required]
-        [Column("nombre")]
-        [StringLength(50)]
+        [StringLength(100)]
         public string nombre { get; set; }
 
-        public ICollection<Sede> Sedes { get; set; }
+        // Relación con Sede (una provincia tiene muchas sedes)
+        public virtual ICollection<Sede> Sedes { get; set; }
     }
 }

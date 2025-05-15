@@ -1,28 +1,41 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovimientoEstudiantil.Models
 {
+    [Table("Usuario")]
     public class Usuario
     {
         [Key]
+        [Column("id_usuario")]
         public int idUsuario { get; set; }
 
-        [Required(ErrorMessage = "El correo es obligatorio")]
-        [EmailAddress(ErrorMessage = "El correo no tiene un formato válido")]
+        [Required]
+        [Column("sede_id")]
+        public int sede { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [StringLength(100)]
+        [Column("correo")]
         public string correo { get; set; }
 
-        [Required(ErrorMessage = "La sede es obligatoria")]
-        public string sede { get; set; }
-
-        [Required(ErrorMessage = "La contraseña es obligatoria")]
-        [DataType(DataType.Password)]
+        [Required]
+        [StringLength(255)]
+        [Column("contrasena")]
         public string contrasena { get; set; }
 
-        [Required(ErrorMessage = "El rol es obligatorio")]
+        [Required]
+        [StringLength(20)]
+        [Column("rol")]
         public string rol { get; set; }
 
         [Required]
-        public DateTime fechaRegistro { get; set; } = DateTime.Now;  // Valor por defecto
+        [Column("fecha_registro", TypeName = "date")]
+        public DateTime fechaRegistro { get; set; }
+
+        public virtual Sede Sede { get; set; } // Si tienes una clase Sede definida
+
     }
 }
