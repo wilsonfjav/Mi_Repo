@@ -30,14 +30,14 @@ namespace MovimientoEstudiantil.Data
             modelBuilder.Entity<Estudiante>()
                 .HasOne(e => e.Provincia)
                 .WithMany() // No hay colección de estudiantes en Provincia
-                .HasForeignKey(e => e.provincia)
+                .HasForeignKey(e => e.provinciaId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Sede → Estudiante (1:N)
             modelBuilder.Entity<Estudiante>()
                 .HasOne(e => e.Sede)
                 .WithMany() // No hay colección de estudiantes en Sede
-                .HasForeignKey(e => e.sede)
+                .HasForeignKey(e => e.sedeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Sede → Usuario (1:N)
@@ -53,6 +53,26 @@ namespace MovimientoEstudiantil.Data
                 .WithMany() // No hay colección de historial en Usuario
                 .HasForeignKey(h => h.idUsuario)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Provincia>().HasData(
+        new Provincia { idProvincia = 1, nombre = "San José" }
+                  );
+            modelBuilder.Entity<Sede>().HasData(
+                new Sede { idSede = 1, nombre = "Ciudad Universitaria Rodrigo Facio", idProvincia = 1 }
+                  );
+            modelBuilder.Entity<Estudiante>().HasData(
+                new Estudiante
+                {
+                    idEstudiante = 1,
+                    correo = "gustavo@ucr.ac.cr",
+                    provinciaId = 1,
+                    sedeId = 1,
+                    satisfaccionCarrera = "Si",
+                    anioIngreso = 2023
+                }
+                     );
+                
+
         }
     }
 }

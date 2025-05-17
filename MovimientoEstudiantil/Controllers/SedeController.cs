@@ -7,22 +7,22 @@ namespace MovimientoEstudiantil.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProvinciaController : Controller
+    public class SedeController : Controller
     {
         private readonly MovimientoEstudiantilContext _context;
 
-        public ProvinciaController(MovimientoEstudiantilContext context)
+        public SedeController(MovimientoEstudiantilContext context)
         {
             _context = context;
         }
 
         //------------------------------------------------------------------------//
-        // GET: /Provincia/Lista_Provincias
-        // Retorna todas las provincias de la base de datos
-        [HttpGet("ListaProvincias")]
-        public async Task<List<Provincia>> ListaProvincias()
+        // GET: /Sede/Lista_Sedes
+        // Retorna todas las sedes de la base de datos
+        [HttpGet("ListaSedes")]
+        public async Task<List<Sede>> ListaSedes()
         {
-            var lista = await _context.Provincias.ToListAsync();
+            var lista = await _context.Sedes.ToListAsync();
             return lista;
         }//end method
     }
