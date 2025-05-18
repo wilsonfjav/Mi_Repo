@@ -1,0 +1,163 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace MovimientoEstudiantil.Migrations
+{
+    /// <inheritdoc />
+    public partial class InitialCreate : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "Provincia",
+                columns: table => new
+                {
+                    id_provincia = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Provincia", x => x.id_provincia);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sede",
+                columns: table => new
+                {
+                    id_sede = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    provincia_id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sede", x => x.id_sede);
+                    table.ForeignKey(
+                        name: "FK_Sede_Provincia_provincia_id",
+                        column: x => x.provincia_id,
+                        principalTable: "Provincia",
+                        principalColumn: "id_provincia",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Estudiante",
+                columns: table => new
+                {
+                    id_estudiante = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    correo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    provincia_id = table.Column<int>(type: "int", nullable: false),
+                    sede_id = table.Column<int>(type: "int", nullable: false),
+                    satisfaccion_carrera = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
+                    anioIngreso = table.Column<int>(type: "int", nullable: false),
+                    ProvinciaidProvincia = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Estudiante", x => x.id_estudiante);
+                    table.ForeignKey(
+                        name: "FK_Estudiante_Provincia_ProvinciaidProvincia",
+                        column: x => x.ProvinciaidProvincia,
+                        principalTable: "Provincia",
+                        principalColumn: "id_provincia");
+                    table.ForeignKey(
+                        name: "FK_Estudiante_Provincia_provincia_id",
+                        column: x => x.provincia_id,
+                        principalTable: "Provincia",
+                        principalColumn: "id_provincia",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Estudiante_Sede_sede_id",
+                        column: x => x.sede_id,
+                        principalTable: "Sede",
+                        principalColumn: "id_sede",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Usuario",
+                columns: table => new
+                {
+                    id_usuario = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    sede_id = table.Column<int>(type: "int", nullable: false),
+                    correo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    contrasena = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    rol = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    fecha_registro = table.Column<DateTime>(type: "date", nullable: false),
+                    SedeidSede = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuario", x => x.id_usuario);
+                    table.ForeignKey(
+                        name: "FK_Usuario_Sede_SedeidSede",
+                        column: x => x.SedeidSede,
+                        principalTable: "Sede",
+                        principalColumn: "id_sede",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Provincia",
+                columns: new[] { "id_provincia", "nombre" },
+                values: new object[] { 1, "San José" });
+
+            migrationBuilder.InsertData(
+                table: "Sede",
+                columns: new[] { "id_sede", "provincia_id", "nombre" },
+                values: new object[] { 1, 1, "Ciudad Universitaria Rodrigo Facio" });
+
+            migrationBuilder.InsertData(
+                table: "Estudiante",
+                columns: new[] { "id_estudiante", "ProvinciaidProvincia", "anioIngreso", "correo", "provincia_id", "satisfaccion_carrera", "sede_id" },
+                values: new object[] { 1, null, 2023, "gustavo@ucr.ac.cr", 1, "Si", 1 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Estudiante_provincia_id",
+                table: "Estudiante",
+                column: "provincia_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Estudiante_ProvinciaidProvincia",
+                table: "Estudiante",
+                column: "ProvinciaidProvincia");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Estudiante_sede_id",
+                table: "Estudiante",
+                column: "sede_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sede_provincia_id",
+                table: "Sede",
+                column: "provincia_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuario_SedeidSede",
+                table: "Usuario",
+                column: "SedeidSede");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "Estudiante");
+
+            migrationBuilder.DropTable(
+                name: "Usuario");
+
+            migrationBuilder.DropTable(
+                name: "Sede");
+
+            migrationBuilder.DropTable(
+                name: "Provincia");
+        }
+    }
+}

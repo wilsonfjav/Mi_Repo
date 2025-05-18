@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovimientoEstudiantil.Data;
 
@@ -11,9 +12,11 @@ using MovimientoEstudiantil.Data;
 namespace MovimientoEstudiantil.Migrations
 {
     [DbContext(typeof(MovimientoEstudiantilContext))]
-    partial class MovimientoEstudiantilContextModelSnapshot : ModelSnapshot
+    [Migration("20250515192932_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,9 +35,6 @@ namespace MovimientoEstudiantil.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idEstudiante"));
 
                     b.Property<int?>("ProvinciaidProvincia")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SedeidSede")
                         .HasColumnType("int");
 
                     b.Property<int>("anioIngreso")
@@ -65,8 +65,6 @@ namespace MovimientoEstudiantil.Migrations
 
                     b.HasIndex("ProvinciaidProvincia");
 
-                    b.HasIndex("SedeidSede");
-
                     b.HasIndex("provinciaId");
 
                     b.HasIndex("sedeId");
@@ -83,40 +81,6 @@ namespace MovimientoEstudiantil.Migrations
                             satisfaccionCarrera = "Si",
                             sedeId = 1
                         });
-                });
-
-            modelBuilder.Entity("MovimientoEstudiantil.Models.HistorialRegistro", b =>
-                {
-                    b.Property<int>("idHistorial")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id_historial");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idHistorial"));
-
-                    b.Property<string>("accion")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<string>("descripcion")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime>("fechaRegistro")
-                        .HasColumnType("date")
-                        .HasColumnName("fecha_registro");
-
-                    b.Property<int>("idUsuario")
-                        .HasColumnType("int")
-                        .HasColumnName("usuario_id");
-
-                    b.HasKey("idHistorial");
-
-                    b.HasIndex("idUsuario");
-
-                    b.ToTable("HistorialRegistros");
                 });
 
             modelBuilder.Entity("MovimientoEstudiantil.Models.Provincia", b =>
@@ -189,7 +153,7 @@ namespace MovimientoEstudiantil.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idUsuario"));
 
-                    b.Property<int?>("SedeidSede")
+                    b.Property<int>("SedeidSede")
                         .HasColumnType("int");
 
                     b.Property<string>("contrasena")
@@ -222,8 +186,6 @@ namespace MovimientoEstudiantil.Migrations
 
                     b.HasIndex("SedeidSede");
 
-                    b.HasIndex("sede");
-
                     b.ToTable("Usuario");
                 });
 
@@ -233,10 +195,6 @@ namespace MovimientoEstudiantil.Migrations
                         .WithMany("Estudiantes")
                         .HasForeignKey("ProvinciaidProvincia");
 
-                    b.HasOne("MovimientoEstudiantil.Models.Sede", null)
-                        .WithMany("Estudiantes")
-                        .HasForeignKey("SedeidSede");
-
                     b.HasOne("MovimientoEstudiantil.Models.Provincia", "Provincia")
                         .WithMany()
                         .HasForeignKey("provinciaId")
@@ -244,6 +202,7 @@ namespace MovimientoEstudiantil.Migrations
                         .IsRequired();
 
                     b.HasOne("MovimientoEstudiantil.Models.Sede", "Sede")
+                        .WithMany("Estudiantes")
                         .HasForeignKey("sedeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -251,17 +210,6 @@ namespace MovimientoEstudiantil.Migrations
                     b.Navigation("Provincia");
 
                     b.Navigation("Sede");
-                });
-
-            modelBuilder.Entity("MovimientoEstudiantil.Models.HistorialRegistro", b =>
-                {
-                    b.HasOne("MovimientoEstudiantil.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("idUsuario")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("MovimientoEstudiantil.Models.Sede", b =>
@@ -277,11 +225,10 @@ namespace MovimientoEstudiantil.Migrations
 
             modelBuilder.Entity("MovimientoEstudiantil.Models.Usuario", b =>
                 {
-                    b.HasOne("MovimientoEstudiantil.Models.Sede", null)
-                        .WithMany("Usuarios")
-                        .HasForeignKey("SedeidSede");
-
                     b.HasOne("MovimientoEstudiantil.Models.Sede", "Sede")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("SedeidSede")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Sede");
