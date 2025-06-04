@@ -1,9 +1,7 @@
 pipeline {
     agent any
 
-    tools {
-        dotnet 'dotnet6'  // Asegúrate que este nombre esté igual en Jenkins > Global Tool Configuration
-    }
+ 
 
     stages {
         stage('Restaurar dependencias') {
