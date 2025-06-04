@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    tools {
+        dotnet 'dotnet6'  // Asegúrate que este nombre esté igual en Jenkins > Global Tool Configuration
+    }
+
+    stages {
+        stage('Restaurar dependencias') {
+            steps {
+                sh 'dotnet restore'
+            }
+        }
+
+        stage('Compilar') {
+            steps {
+                sh 'dotnet build --no-restore'
+            }
+        }
+
+        stage('Pruebas') {
+            steps {
+                sh 'dotnet test --no-build --verbosity normal'
+            }
+        }
+    }
+}
